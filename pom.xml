@@ -83,6 +83,27 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.0.8</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.17</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/community?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8</url>
+                    <user>root</user>
+                    <password>root</password>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <validateOnMigrate>false</validateOnMigrate>
+                    <table>schemas_version</table>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

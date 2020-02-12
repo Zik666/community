@@ -20,6 +20,11 @@
             <button class="btn btn-primary my-2 my-sm-0" type="submit">搜索</button>
         </form>
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item pr-2" th:if="${session.user != null}">
+                <a class="nav-link" th:href="@{/publish}">
+                    提问
+                </a>
+            </li>
             <li class="nav-item pr-2" th:if="${session.user == null}">
                 <a class="nav-link" href="https://github.com/login/oauth/authorize?client_id=2708af41c946195294ad&redirect_uri=http://localhost:8887/callback&scope=user&state=1">
                     登录
@@ -41,5 +46,11 @@
 <script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        // 解决bootstrap下拉菜单第一次点击无反应问题
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
 </body>
 </html>
