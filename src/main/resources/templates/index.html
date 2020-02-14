@@ -5,44 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>码匠社区</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/community.css}"/>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">码匠社区</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="搜索问题" aria-label="Search">
-            <button class="btn btn-primary my-2 my-sm-0" type="submit">搜索</button>
-        </form>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item pr-2" th:if="${session.user != null}">
-                <a class="nav-link" th:href="@{/publish}">
-                    提问
-                </a>
-            </li>
-            <li class="nav-item pr-2" th:if="${session.user == null}">
-                <a class="nav-link" href="https://github.com/login/oauth/authorize?client_id=2708af41c946195294ad&redirect_uri=http://localhost:8887/callback&scope=user&state=1">
-                    登录
-                </a>
-            </li>
-            <li class="nav-item dropdown" th:if="${session.user != null}">
-                <a class="nav-link dropdown-toggle" th:text="${session.user.getName()}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">消息中心</a>
-                    <a class="dropdown-item" href="#">个人资料</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">退出登录</a>
-                </div>
-            </li>
-        </ul>
+<div th:replace="~{commons/commons::topNavbar}"></div>
+<div class="container main my-4">
+    <div class="row rounded shadow py-3">
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 border-right">
+            <h4>
+                <img th:src="@{/icons/list.svg}" width="32" height="32" class="align-middle">
+                <span class="align-middle pl-1">发现</span>
+            </h4>
+            <hr>
+            <ul class="list-unstyled">
+                <li class="media pb-3" th:each="question : ${pagination.getQuestions()}">
+                    <img th:src="${question.getUser().getAvatarUrl()}" class="rounded mr-1 list-avatar">
+                    <div class="media-body">
+                        <h5 class="my-0" th:text="${question.getTitle()}"></h5>
+                        <p class="mb-0"><small th:text="${question.getDescription()}"></small></p>
+                        <span class="text-desc"><span th:text="${question.getCommentCount()}"></span> 个回复 • <span
+                                th:text="${question.getViewCount()}"></span> 次浏览 • <span
+                                th:text="${#dates.format(question.getGmtCreate(), 'yyyy-MM-dd HH:mm')}"></span></span>
+                    </div>
+                </li>
+            </ul>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:if="${pagination.getShowFirstPage()}">
+                        <a class="page-link" th:href="@{/(page=1)}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:if="${pagination.getShowPrevious()}"><a class="page-link" th:href="@{/(page=${pagination.getPage() - 1})}">&lsaquo;</a></li>
+                    <li th:class="${page == pagination.getPage() ? 'page-item active' : 'page-item'}" th:each="page : ${pagination.getPages()}"><a class="page-link" th:href="@{/(page=${page})}" th:text="${page}"></a></li>
+                    <li class="page-item" th:if="${pagination.getShowNext()}"><a class="page-link"  th:href="@{/(page=${pagination.getPage() + 1})}">&rsaquo;</a></li>
+                    <li class="page-item" th:if="${pagination.getShowEndPage()}">
+                        <a class="page-link" th:href="@{/(page=${pagination.getTotalPage()})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-xl-1 pt-lg-1 pt-md-3 pt-sm-3 pt-3 pb-3">
+            <ul class="list-group">
+                <li class="list-group-item active"><h5>热门话题</h5></li>
+                <li class="list-group-item">111111111</li>
+                <li class="list-group-item">222222222</li>
+                <li class="list-group-item">333333333</li>
+            </ul>
+        </div>
     </div>
-</nav>
+
+</div>
 <script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
