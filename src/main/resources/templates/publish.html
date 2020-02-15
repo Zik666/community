@@ -15,7 +15,7 @@
             <h4><img th:src="@{/icons/edit.svg}" class="align-middle" width="32" height="32"><span
                     class="align-middle pl-1">发起</span></h4>
             <hr>
-            <form id="question" novalidate action="/publish" method="post">
+            <form id="question" novalidate th:action="@{/publish}" method="post">
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）：</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}"
