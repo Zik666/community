@@ -26,7 +26,7 @@
             </div>
             <hr class="mb-2">
             <nav class="nav d-flex align-middle">
-                <a class="nav-link btn-sm pl-0 py-0" th:href="@{'/publish/' + ${questionDTO.getId()}}">
+                <a class="nav-link btn-sm pl-0 py-0" th:href="@{'/publish/' + ${questionDTO.getId()}}" th:if="${session.user != null && session.user.getId() == questionDTO.getCreator()}">
                     <img th:src="@{/icons/edit.svg}">
                     <span class="text-desc align-middle">编辑</span>
                 </a>
