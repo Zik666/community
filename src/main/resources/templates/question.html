@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${questionDTO.getTitle() + ' - Code BBS'}"></title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/community.css}"/>
+</head>
+<body>
+<div th:replace="~{commons/commons::topNavbar}"></div>
+<div class="container main my-4">
+    <div class="row rounded shadow py-3">
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 border-right">
+            <h4 class="d-flex align-middle">
+                <span class="align-middle pl-1" th:text="${questionDTO.getTitle()}"></span>
+            </h4>
+            <span class="text-desc">
+                作者：<span th:text="${questionDTO.getUser().getName()}"></span> |
+                回复数：<span th:text="${questionDTO.getCommentCount()}"></span> |
+                阅读数：<span th:text="${questionDTO.getViewCount()}"></span> |
+                发布时间：<span th:text="${#dates.format(questionDTO.getGmtCreate(), 'yyyy-MM-dd HH:mm')}"></span>
+            </span>
+            <hr class="mt-2">
+            <div th:text="${questionDTO.getDescription()}">
+            </div>
+            <hr class="mb-2">
+            <nav class="nav d-flex align-middle">
+                <a class="nav-link btn-sm pl-0 py-0" th:href="@{'/publish/' + ${questionDTO.getId()}}">
+                    <img th:src="@{/icons/edit.svg}">
+                    <span class="text-desc align-middle">编辑</span>
+                </a>
+            </nav>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-xl-1 pt-lg-1 pt-md-3 pt-sm-3 pt-3 pb-3">
+            <h6>发起人</h6>
+            <div class="d-flex align-middle">
+                <img th:src="${questionDTO.getUser().getAvatarUrl()}" width="32" height="32">
+                <small class="ml-2" th:text="${questionDTO.getUser().getName()}"></small>
+            </div>
+            <hr class="my-2">
+            <h6>相关问题</h6>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        // 解决bootstrap下拉菜单第一次点击无反应问题
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+</body>
+</html>

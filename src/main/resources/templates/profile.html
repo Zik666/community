@@ -12,7 +12,7 @@
 <div class="container main my-4">
     <div class="row rounded shadow py-3">
         <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 border-right">
-            <h4>
+            <h4 class="d-flex align-middle">
                 <span class="align-middle pl-1" th:text="${sectionName}"></span>
             </h4>
             <hr>
@@ -20,7 +20,7 @@
                 <li class="media pb-3" th:each="question : ${pagination.getQuestions()}">
                     <img th:src="${question.getUser().getAvatarUrl()}" class="rounded mr-1 list-avatar">
                     <div class="media-body">
-                        <h5 class="my-0" th:text="${question.getTitle()}"></h5>
+                        <h5 class="my-0"><a th:href="@{'/question/' + ${question.getId()}}" th:text="${question.getTitle()}"></a></h5>
                         <span class="text-desc"><span th:text="${question.getCommentCount()}"></span> 个回复 • <span
                                 th:text="${question.getViewCount()}"></span> 次浏览 • <span
                                 th:text="${#dates.format(question.getGmtCreate(), 'yyyy-MM-dd HH:mm')}"></span></span>
