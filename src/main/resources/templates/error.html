@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Error - Code BBS</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/community.css}"/>
+</head>
+<body>
+<div th:replace="~{commons/commons::topNavbar}"></div>
+<div class="container-fluid jumbotron text-center mt-5">
+    <img th:src="@{/icons/error.svg}">
+    <h1 class="display-4">出错啦！！！！</h1>
+    <p class="lead" th:text="${message}">服务太热啦，要不然稍等下再来试试~</p>
+    <a class="btn btn-primary btn-lg" th:href="@{/}" role="button">回到主页</a>
+</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        // 解决bootstrap下拉菜单第一次点击无反应问题
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+</body>
+</html>
