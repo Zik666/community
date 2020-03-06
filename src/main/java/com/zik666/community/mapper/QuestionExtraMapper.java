@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestionExtraMapper {
     int incView(Question record);
+    int incCommentCount(Question record);
 }

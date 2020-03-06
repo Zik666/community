@@ -24,13 +24,25 @@
             <hr class="mt-2">
             <div th:text="${questionDTO.getDescription()}">
             </div>
-            <hr class="mb-2">
+            <hr class="mb-0">
             <nav class="nav d-flex align-middle">
                 <a class="nav-link btn-sm pl-0 py-0" th:href="@{'/publish/' + ${questionDTO.getId()}}" th:if="${session.user != null && session.user.getId() == questionDTO.getCreator()}">
                     <img th:src="@{/icons/edit.svg}">
                     <span class="text-desc align-middle">编辑</span>
                 </a>
             </nav>
+            <h5 class="pt-5 pb-3 border-bottom"><span th:text="${questionDTO.getCommentCount()}"></span>个回复</h5>
+            <div id="comment_section">
+                <div class="align-middle">
+                <img th:src="${questionDTO.getUser().getAvatarUrl()}" width="42" height="42" class="img-thumbnail" th:alt="${questionDTO.getUser().getName()}">
+                <small class="align-middle ml-1" th:text="${questionDTO.getUser().getName()}"></small>
+            </div>
+                <div class="input-group mt-1">
+                <input type="hidden" id="question_id" th:value="${questionDTO.getId()}">
+                <textarea class="form-control" rows="6" id="comment_content"></textarea>
+            </div>
+                <button type="button" class="btn btn-success mt-2 float-right" onclick="post()">回复</button>
+            </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-xl-1 pt-lg-1 pt-md-3 pt-sm-3 pt-3 pb-3">
             <h6>发起人</h6>
@@ -47,6 +59,7 @@
 <script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/community.js}" type="application/javascript"></script>
 <script type="text/javascript">
     $(function () {
         // 解决bootstrap下拉菜单第一次点击无反应问题
