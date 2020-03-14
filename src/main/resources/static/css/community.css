@@ -19,3 +19,17 @@ body{
     font-weight: normal;
     color: #999;
 }
+.menu button{
+    overflow: hidden;
+}
+.menu button:hover img{
+    transform: translateY(-26px);
+    filter: drop-shadow(0 26px 0px aliceblue);
+}
+.nav a{
+    overflow: hidden;
+}
+.nav a:hover .edit{
+    transform: translateY(-20px);
+    filter: drop-shadow(0 20px 0px #499ef3);
+}

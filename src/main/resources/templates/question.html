@@ -25,30 +25,44 @@
             <div th:text="${questionDTO.getDescription()}">
             </div>
             <hr class="mb-0">
-            <nav class="nav d-flex align-middle">
-                <a class="nav-link btn-sm pl-0 py-0" th:href="@{'/publish/' + ${questionDTO.getId()}}" th:if="${session.user != null && session.user.getId() == questionDTO.getCreator()}">
-                    <img th:src="@{/icons/edit.svg}">
-                    <span class="text-desc align-middle">编辑</span>
+            <nav class="nav">
+                <a class="nav-link btn-sm pl-0 py-1 d-flex align-middle" th:href="@{'/publish/' + ${questionDTO.getId()}}" th:if="${session.user != null && session.user.getId() == questionDTO.getCreator()}">
+                    <img class="edit" th:src="@{/icons/edit.svg}">
+                    <span class="text-desc align-middle edit">编辑</span>
                 </a>
             </nav>
-            <h5 class="pt-5 pb-3 border-bottom"><span th:text="${questionDTO.getCommentCount()}"></span>个回复</h5>
+            <h5 class="pt-5 pb-3 mb-0 border-bottom"><span th:text="${questionDTO.getCommentCount()}"></span>个回复</h5>
+            <ul class="list-unstyled mb-0" th:each="comment : ${comments}">
+                <li class="media pb-2 mt-1 border-bottom">
+                    <img th:src="${comment.getUser().getAvatarUrl()}" class="rounded m-1 list-avatar">
+                    <div class="media-body">
+                        <small class="my-0" th:text="${comment.getUser().getName()}"></small>
+                        <div th:text="${comment.getContent()}"></div>
+                        <div class="mt-2 menu">
+                            <button type="button" class="btn btn-sm btn-outline-secondary d-flex float-left mr-1"><img th:src="@{/icons/up.svg}"></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary d-flex float-left"><img th:src="@{/icons/comment.svg}"></button>
+                            <span class="float-right text-desc" th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
             <div id="comment_section">
-                <div class="align-middle">
-                <img th:src="${questionDTO.getUser().getAvatarUrl()}" width="42" height="42" class="img-thumbnail" th:alt="${questionDTO.getUser().getName()}">
-                <small class="align-middle ml-1" th:text="${questionDTO.getUser().getName()}"></small>
-            </div>
-                <div class="input-group mt-1">
-                <input type="hidden" id="question_id" th:value="${questionDTO.getId()}">
-                <textarea class="form-control" rows="6" id="comment_content"></textarea>
-            </div>
+                <div class="align-middle mt-2" th:if="${session.user != null}">
+                    <img th:src="${session.user.getAvatarUrl()}" width="32" height="32" th:alt="${session.user.getName()}">
+                    <small class="align-middle" th:text="${session.user.getName()}"></small>
+                </div>
+                <div class="input-group mt-2">
+                    <input type="hidden" id="question_id" th:value="${questionDTO.getId()}">
+                    <textarea class="form-control" rows="6" id="comment_content"></textarea>
+                </div>
                 <button type="button" class="btn btn-success mt-2 float-right" onclick="post()">回复</button>
             </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-xl-1 pt-lg-1 pt-md-3 pt-sm-3 pt-3 pb-3">
             <h6>发起人</h6>
-            <div class="d-flex align-middle">
+            <div class="align-middle">
                 <img th:src="${questionDTO.getUser().getAvatarUrl()}" width="32" height="32">
-                <small class="ml-2" th:text="${questionDTO.getUser().getName()}"></small>
+                <small class="align-middle" th:text="${questionDTO.getUser().getName()}"></small>
             </div>
             <hr class="my-2">
             <h6>相关问题</h6>
