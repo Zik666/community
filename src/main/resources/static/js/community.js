@@ -1,6 +1,4 @@
-function post() {
-    const questionId = $("#question_id").val();
-    const content = $("#comment_content").val();
+function comment2targetId(targetId, type, content) {
     if (!content) {
         alert("回复内容不能为空~~~");
         return;
@@ -10,9 +8,9 @@ function post() {
         contentType: "application/json",
         url: "/comment",
         data: JSON.stringify({
-            "parentId":questionId,
+            "parentId":targetId,
             "content":content,
-            "type":1
+            "type":type
         }),
         success: function (response) {
             if (response.code === 200) {
@@ -32,4 +30,48 @@ function post() {
         },
         data_type: "json"
     })
+}
+
+/**
+* 提交回复
+*/
+function post() {
+    const questionId = $("#question_id").val();
+    const content = $("#comment_content").val();
+    comment2targetId(questionId, 1, content);
+}
+/**
+* 提交二级评论
+*/
+function comment(e) {
+    const commentId = e.getAttribute("data-id");
+    const content = $("#input-" + commentId).val();
+    comment2targetId(commentId, 2, content)
+}
+/**
+* 展开二级评论
+*/
+function collapseComments(e) {
+    const id = e.getAttribute("data-id");
+    const commentBtn = $("#commentBtn-" + id);
+    commentBtn.toggleClass("active");
+    // if (commentBtn.hasClass("active")) {
+    //     $.getJSON( "/comment/" + id, function(data) {
+    //         const commentBody = $("#comment-body-" + id);
+    //         const items = [];
+    //         $.each(data.data, function(comment) {
+    //             const c = $("</div>", {
+    //                 "class": "collapse py-0 border rounded",
+    //                 html: comment.content
+    //             });
+    //             items.push(c);
+    //         });
+    //
+    //         $("</div>", {
+    //             "class":"collapse py-0 border rounded",
+    //             "id":"comment-" + id,
+    //             html: items.join("")
+    //         }).appendTo(commentBody);
+    //     });
+    // }
 }

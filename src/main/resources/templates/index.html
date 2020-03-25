@@ -16,9 +16,9 @@
                 <img th:src="@{/icons/list.svg}" width="32" height="32" class="align-middle">
                 <span class="align-middle pl-1">发现</span>
             </h4>
-            <hr>
+            <hr class="mb-0">
             <ul class="list-unstyled">
-                <li class="media pb-3" th:each="question : ${pagination.getQuestions()}">
+                <li class="media list py-2" th:each="question : ${pagination.getQuestions()}">
                     <img th:src="${question.getUser().getAvatarUrl()}" class="rounded m-1 list-avatar">
                     <div class="media-body">
                         <h5 class="my-0"><a th:href="@{'/question/' + ${question.getId()}}" th:text="${question.getTitle()}"></a></h5>

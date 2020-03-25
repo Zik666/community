@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class GithubProvider {
     public String getAccessToken(AccessTokenDTO accessTokenDTO) {
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
+        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(600000, TimeUnit.MILLISECONDS).readTimeout(600000, TimeUnit.MILLISECONDS).build();
         RequestBody body = RequestBody.create(JSON.toJSONString(accessTokenDTO), mediaType);
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
