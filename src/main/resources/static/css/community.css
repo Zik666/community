@@ -1,3 +1,7 @@
+html {
+    width:100vw;
+    overflow-x:hidden;
+}
 body{
     background-color: #e9ecef;
 }
@@ -62,4 +66,12 @@ body{
 }
 .secondComment {
     background-color: #fafafa;
+}
+.commentCount {
+    height: 16px;
+    line-height: 16px;
+}
+.comment {
+    height: 30px;
+    font-size: 12px;
 }

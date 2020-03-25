@@ -24,7 +24,15 @@
             <hr class="mt-2">
             <div th:text="${questionDTO.getDescription()}">
             </div>
-            <hr class="mb-0">
+            <hr class="mb-1">
+            <div th:each="tag : ${questionDTO.getTag().split(',')}">
+                <span class="badge badge-info float-left mr-1 align-middle">
+                    <img th:src="@{/icons/tag.svg}" class="align-middle">
+                    <span th:text="${tag}" class="align-middle mr-1"></span>
+                </span>
+            </div>
+            <div class="clearfix"></div>
+            <hr class="mt-1 mb-0">
             <nav class="nav">
                 <a class="nav-link btn-sm pl-0 py-1 d-flex align-middle"
                    th:href="@{'/publish/' + ${questionDTO.getId()}}"
@@ -47,33 +55,16 @@
                                     th:id="${'commentBtn-' + comment.getId()}" th:data-id="${comment.getId()}"
                                     data-toggle="collapse" th:data-target="'#' + ${'comment-' + comment.getId()}"
                                     aria-expanded="false" th:aria-controls="${'comment-' + comment.getId()}"
-                                    onclick="collapseComments(this)"><img th:src="@{/icons/comment.svg}"></button>
+                                    onclick="collapseComments(this)"><img th:src="@{/icons/comment.svg}"><span class="commentCount ml-1" th:text="${comment.getCommentCount()}"></span></button>
                             <span class="float-right text-desc align-bottom"
                                   th:text="${#dates.format(comment.getGmtCreate(), 'yyyy-MM-dd')}"></span>
                         </div>
                         <div class="clearfix"></div>
                         <!--二级评论-->
                         <div class="collapse py-0 border rounded" th:id="${'comment-' + comment.getId()}">
-                            <ul class="list-unstyled">
-                                <li class="media list mx-2 py-2">
-                                    <img th:src="${session.user.getAvatarUrl()}" width="32" height="32"
-                                         class="rounded m-1">
-                                    <div class="media-body">
-                                        <small class="d-flex" th:text="${comment.getUser().getName()}"></small>
-                                        <small class="d-flex">11111111111</small>
-                                    </div>
-                                </li>
-                                <li class="media list mx-2 py-2">
-                                    <img th:src="${session.user.getAvatarUrl()}" width="32" height="32"
-                                         class="rounded m-1">
-                                    <div class="media-body">
-                                        <small class="d-flex" th:text="${comment.getUser().getName()}"></small>
-                                        <small class="d-flex">22222222222</small>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="secondComment  px-3 pt-3 pb-2">
-                                <input class="form-control pl-2" type="text" placeholder="评论一下..."
+                            <ul class="list-unstyled" th:id="${'subCommentContainer-' + comment.getId()}"></ul>
+                            <div class="secondComment px-3 pt-3 pb-2">
+                                <input class="form-control pl-2 comment" type="text" placeholder="评论一下..."
                                        th:id="${'input-' + comment.getId()}">
                                 <button class="btn btn-success btn-mini d-flex float-right mt-2" type="button"
                                         th:data-id="${comment.id}" onclick="comment(this)">评论
@@ -113,6 +104,7 @@
 <script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/moment.js}" type="application/javascript"></script>
 <script th:src="@{/js/community.js}" type="application/javascript"></script>
 <script type="text/javascript">
     $(function () {

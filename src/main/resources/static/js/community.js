@@ -54,24 +54,31 @@ function comment(e) {
 function collapseComments(e) {
     const id = e.getAttribute("data-id");
     const commentBtn = $("#commentBtn-" + id);
+    const subCommentContainer = $("#subCommentContainer-" + id);
     commentBtn.toggleClass("active");
-    // if (commentBtn.hasClass("active")) {
-    //     $.getJSON( "/comment/" + id, function(data) {
-    //         const commentBody = $("#comment-body-" + id);
-    //         const items = [];
-    //         $.each(data.data, function(comment) {
-    //             const c = $("</div>", {
-    //                 "class": "collapse py-0 border rounded",
-    //                 html: comment.content
-    //             });
-    //             items.push(c);
-    //         });
-    //
-    //         $("</div>", {
-    //             "class":"collapse py-0 border rounded",
-    //             "id":"comment-" + id,
-    //             html: items.join("")
-    //         }).appendTo(commentBody);
-    //     });
-    // }
+    if (commentBtn.hasClass("active") && subCommentContainer.children().length === 0) {
+        $.getJSON( "/comment/" + id, function(data) {
+            $.each(data.data, function(index, comment) {
+                const mediaBody = $("<div/>", {
+                    "class": "media-body"
+                }).append($("<small/>", {
+                    "class": "d-flex",
+                    "html": comment.user.name + ' • ' + moment(comment.gmtCreate).format("YYYY-MM-DD HH:MM")
+                })).append($("<small/>", {
+                    "class": "d-flex",
+                    "html": comment.content
+                }));
+                const img = $("<img/>", {
+                    "class": "rounded m-1",
+                    "width": 32,
+                    "height": 32,
+                    "src": comment.user.avatarUrl
+                });
+                const commentElement = $("<li/>", {
+                    "class": "media list mx-2 py-2",
+                }).append(img).append(mediaBody);
+                subCommentContainer.append(commentElement);
+            });
+        });
+    }
 }
