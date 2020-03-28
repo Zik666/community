@@ -19,43 +19,62 @@
             <form id="question" novalidate th:action="@{/publish}" method="post">
                 <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
-                    <label for="title">问题标题（简单扼要）：</label>
+                    <label for="title">问题标题(简单扼要):</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}"
-                           placeholder="问题标题....." required pattern="^.{1,26}$">
+                           placeholder="问题标题....." required pattern="^.{1,26}$" autocomplete="off">
                     <div class="invalid-feedback"><small>问题标题长度不超过25字</small></div>
                 </div>
                 <div class="form-group">
-                    <label for="description">问题补充（必填，请参照右侧提示）：</label>
+                    <label for="description">问题补充(必填，请参照右侧提示):</label>
                     <textarea class="form-control" name="description" id="description" th:text="${description}"
                               cols="30" rows="10" required></textarea>
                     <div class="invalid-feedback"><small>请输入问题补充</small></div>
                 </div>
-                <div class="form-group">
-                    <label for="tag">添加标题：</label>
+                <div class="form-group mb-1">
+                    <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}"
-                           placeholder="输入标签，以逗号分隔" required pattern="^(.{1,10},)*.{1,10}$">
+                           placeholder="输入标签，以逗号分隔" required pattern="^(.{1,10},)*.{1,10}$" autocomplete="off" onclick="showSelectTag()">
                     <div class="invalid-feedback"><small>每个标签不超过10个字，并用逗号隔开</small></div>
+                    <div class="my-1 publish-select-tag" id="select-tag">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" th:each="selectCategory : ${tags}">
+                                <a class="nav-link" th:id="${selectCategory.getCategoryName() + '-tab'}" data-toggle="tab" th:href="${'#' + selectCategory.getCategoryName()}" role="tab"
+                                   th:aria-controls="${selectCategory.getCategoryName()}" aria-selected="true" th:text="${selectCategory.getCategoryName()}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-1" id="myTabContent">
+                            <div class="tab-pane fade show" th:each="selectCategory : ${tags}" th:id="${selectCategory.getCategoryName()}" role="tabpanel" th:aria-labelledby="${selectCategory.getCategoryName() + '-tab'}">
+                                <span class="badge badge-info float-left m-1 align-middle" onclick="selectTag(this)" th:each="selectTag : ${selectCategory.getTags()}" th:data-tag="${selectTag}">
+                                    <img th:src="@{/icons/tag.svg}" class="align-middle">
+                                    <span class="align-middle mr-1" th:text="${selectTag}"></span>
+                                </span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
-                <div class="alert alert-danger alert-error alert-dismissible fade show col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                <div class="clearfix"></div>
+                <div class="alert alert-danger alert-error alert-dismissible fade show col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-1"
                      role="alert" th:if="${error != null}">
                     <strong th:text="${error}"></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-publish">发布</button>
+                <div class="form-group mb-1">
+                    <div class="clearfix"></div>
+                    <button type="submit" class="btn btn-success float-right">发布</button>
+                    <div class="clearfix"></div>
                 </div>
 
             </form>
         </div>
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 pt-xl-1 pt-lg-1 pt-md-3 pt-sm-3 pt-3 pb-3">
-            <ul class="list-group">
-                <li class="list-group-item active"><h5>问题发起指南</h5></li>
-                <li class="list-group-item">问题标题: 请用精简的语言描述您发布的问题，不超过25字</li>
-                <li class="list-group-item">问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料</li>
-                <li class="list-group-item">选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字</li>
-            </ul>
+            <h6>问题发起指南</h6>
+            <p><b>• 问题标题:</b> 请用<b style="color:red">精简</b>的语言描述您发布的问题，不超过25字</p>
+            <p><b>• 问题补充:</b> 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料： </p>
+            <p><b>• 选择标签:</b> 选择一个或者多个合适的标签，不超过<b style="color:red">10</b>个字</p>
         </div>
     </div>
 
@@ -63,6 +82,7 @@
 <script th:src="@{/js/jquery-3.4.1.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.bundle.min.js}" type="application/javascript"></script>
 <script th:src="@{/js/bootstrap.min.js}" type="application/javascript"></script>
+<script th:src="@{/js/community.js}" type="application/javascript"></script>
 <script type="text/javascript">
     $(function () {
         // 解决bootstrap下拉菜单第一次点击无反应问题
@@ -70,7 +90,7 @@
     });
     $(function () {
         $("#question").submit(function (event) {
-            const f = $(this)
+            const f = $(this);
             if (f[0].checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation()

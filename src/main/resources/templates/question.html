@@ -97,6 +97,11 @@
             </div>
             <hr class="my-2">
             <h6>相关问题</h6>
+            <ul class="list-unstyled">
+                <li th:each="related : ${relatedQuestions}">
+                    <a th:href="@{'/question/' + ${related.getId()}}"><small th:text="${related.getTitle()}"></small></a>
+                </li>
+            </ul>
         </div>
     </div>
 
